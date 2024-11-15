@@ -3,7 +3,6 @@ package com.sinergy.chronosync.dto.request;
 import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.model.user.UserRole;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,6 @@ import lombok.NoArgsConstructor;
  * User registration request data transfer object.
  */
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRegisterRequestDTO {

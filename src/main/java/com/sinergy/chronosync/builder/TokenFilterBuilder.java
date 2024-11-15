@@ -12,8 +12,8 @@ import java.util.List;
 @Builder
 public class TokenFilterBuilder extends BaseFilterBuilder<Token> {
 
-	private static final String JWT_STRING = "jwt_string";
-	private static final String USER_ID = "user_id";
+	private static final String JWT_STRING = "jwtString";
+	private static final String USER_ID = "user";
 
 	private User user;
 	private String jwtString;

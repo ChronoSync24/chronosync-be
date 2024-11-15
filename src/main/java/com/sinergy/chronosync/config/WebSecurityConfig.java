@@ -1,6 +1,7 @@
 package com.sinergy.chronosync.config;
 
 import com.sinergy.chronosync.model.user.UserRole;
+import com.sinergy.chronosync.util.CollectionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+
+import java.util.List;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -32,14 +35,24 @@ public class WebSecurityConfig {
 	private final AuthenticationProvider authenticationProvider;
 	private final LogoutHandler logoutHandler;
 
-	private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**"};
-	private static final String[] ADMIN_LIST_URL = {"/api/v1/user/**", "/api/v1/test/test-manager"};
-	private static final String[] MANAGER_LIST_URL = {"/api/v1/test/test-manager"};
-	private static final String[] EMPLOYEE_LIST_URL = {""};
+	private static final List<String> WHITE_LIST_URL = List.of("/api/v1/auth/**");
 
-	//TODO: Admin list = manager list + admin protected endpoints
-	//TODO: Manager list = employee list + manager protected endpoints
-	//TODO: Employee list = employee endpoints
+	private static final List<String> EMPLOYEE_LIST_URL = List.of(
+		"/api/v1/employee/**"
+	);
+
+	private static final List<String> MANAGER_LIST_URL = CollectionUtils.concat(
+		EMPLOYEE_LIST_URL,
+		List.of("/api/v1/test/test-manager")
+	);
+
+	private static final List<String> ADMIN_LIST_URL = CollectionUtils.concat(
+		MANAGER_LIST_URL,
+		List.of(
+			"/api/v1/user/enable",
+			"/api/v1/test/test-manager"
+		)
+	);
 
 	/**
 	 * Configures the default security filter chain.
@@ -57,10 +70,10 @@ public class WebSecurityConfig {
 		return http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(req -> req
-				.requestMatchers(WHITE_LIST_URL).permitAll()
-				.requestMatchers(ADMIN_LIST_URL).hasRole(UserRole.ADMINISTRATOR.name())
-				.requestMatchers(MANAGER_LIST_URL).hasRole(UserRole.MANAGER.name())
-//				.requestMatchers(EMPLOYEE_LIST_URL).hasRole(UserRole.EMPLOYER.name())
+				.requestMatchers(WHITE_LIST_URL.toArray(String[]::new)).permitAll()
+				.requestMatchers(ADMIN_LIST_URL.toArray(String[]::new)).hasRole(UserRole.ADMINISTRATOR.name())
+				.requestMatchers(MANAGER_LIST_URL.toArray(String[]::new)).hasRole(UserRole.MANAGER.name())
+//				.requestMatchers(EMPLOYEE_LIST_URL).hasRole(UserRole.EMPLOYEE.name())
 			)
 			.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
 			.authenticationProvider(authenticationProvider)

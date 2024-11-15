@@ -2,7 +2,6 @@ package com.sinergy.chronosync.model.user;
 
 import com.sinergy.chronosync.model.BaseEntity;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

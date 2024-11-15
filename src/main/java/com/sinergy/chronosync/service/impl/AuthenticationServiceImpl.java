@@ -15,6 +15,7 @@ import com.sinergy.chronosync.util.JwtUtils;
 import lombok.AllArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,9 +57,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	 */
 	@Override
 	public AuthenticationResponse authenticate(AuthenticationRequestDTO request) {
-		authenticationManager.authenticate(
-			new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-		);
+		try {
+			authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+			);
+		} catch (BadCredentialsException e) {
+			throw new ServiceException("Invalid credentials.");
+		}
 
 		User user = userRepository
 			.findOne(UserFilterBuilder.builder().username(request.getUsername()).build().toSpecification())

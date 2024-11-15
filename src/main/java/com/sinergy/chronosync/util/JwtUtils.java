@@ -24,10 +24,10 @@ import java.util.function.Function;
 @Service
 public class JwtUtils {
 
-	@Value("${security.jwt.secret}")
+	@Value("${security.jwt.secret:default}")
 	private String SECRET_KEY;
 
-	@Value("${security.jwt.expiration}")
+	@Value("${security.jwt.expiration:1}")
 	private Long JWT_EXPIRATION;
 
 	/**
@@ -76,7 +76,7 @@ public class JwtUtils {
 			.subject(userDetails.getUsername())
 			.issuedAt(new Date(System.currentTimeMillis()))
 			.expiration(new Date(System.currentTimeMillis() + 1000 * 3600 * JWT_EXPIRATION))
-			.signWith(getSigningKey(), Jwts.SIG.HS256)
+			.signWith(getSigningKey())
 			.compact();
 	}
 
@@ -117,7 +117,6 @@ public class JwtUtils {
 	 * @return {@link String} representing the generated JWT string
 	 */
 	public String generateJWTString(UserDetails userDetails) {
-
 		return buildJWTString(new HashMap<>(), userDetails);
 	}
 
@@ -129,8 +128,6 @@ public class JwtUtils {
 	 * @return {@code true} if the token is valid for the user details, {@code false} otherwise
 	 */
 	public Boolean isTokenValid(String jwtString, UserDetails userDetails) {
-		final String jwtUsername = extractUsername(jwtString);
-
-		return jwtUsername.equals(userDetails.getUsername()) && !isTokenExpired(jwtString);
+		return !isTokenExpired(jwtString) && extractUsername(jwtString).equals(userDetails.getUsername());
 	}
 }
