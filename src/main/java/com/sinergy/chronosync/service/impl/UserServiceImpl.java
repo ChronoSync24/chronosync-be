@@ -3,6 +3,7 @@ package com.sinergy.chronosync.service.impl;
 import com.sinergy.chronosync.builder.UserFilterBuilder;
 import com.sinergy.chronosync.repository.UserRepository;
 import com.sinergy.chronosync.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
  * User service implementation.
  */
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
@@ -25,7 +26,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void enable(Long id) throws ServiceException {
 		UserFilterBuilder userFilterBuilder = UserFilterBuilder.builder().id(id).build();
-
 		userRepository.findOne(userFilterBuilder.toSpecification())
 			.ifPresentOrElse(user -> {
 				user.setIsEnabled(true);

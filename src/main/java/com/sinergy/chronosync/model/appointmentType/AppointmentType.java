@@ -1,6 +1,8 @@
 package com.sinergy.chronosync.model.appointmentType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sinergy.chronosync.model.BaseEntity;
+import com.sinergy.chronosync.model.firm.Firm;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.Entity;
 
 import java.util.Collection;
-import java.util.Currency;
 import java.util.List;
 
 /**
@@ -23,14 +24,18 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "appointmentType")
+@Table(name = "appointmentTypes")
 public class AppointmentType extends BaseEntity {
-
-	//TODO: Replace attribute types of appointmentPrice and currency
 
 	private String name;
 	private Integer durationMinutes;
 	private Double price;
-	private String currency; // Store currency code (e.g., "EUR", "BAM", "USD"...)
+	private String colourCode;
+	@Enumerated(EnumType.STRING)
+	private Currency currency;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "firm_id")
+	@JsonBackReference
+	private Firm firm;
 }

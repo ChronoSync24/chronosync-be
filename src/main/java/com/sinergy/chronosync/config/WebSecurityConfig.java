@@ -46,7 +46,6 @@ public class WebSecurityConfig {
 		List.of(
 			"/api/v1/test/test-manager",
 			"/api/v1/appointmenttype/**"
-
 		)
 	);
 

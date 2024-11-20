@@ -1,7 +1,7 @@
 package com.sinergy.chronosync.model.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.sinergy.chronosync.model.firm.Firm;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,4 +83,8 @@ public class User extends Person implements UserDetails {
 	public boolean isEnabled() {
 		return this.isEnabled;
 	}
+
+	@ManyToOne
+	@JoinColumn(name = "firm_id")
+	private Firm firm;
 }
