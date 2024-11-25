@@ -3,7 +3,6 @@ package com.sinergy.chronosync.service.impl;
 import com.sinergy.chronosync.builder.UserFilterBuilder;
 import com.sinergy.chronosync.repository.UserRepository;
 import com.sinergy.chronosync.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
  * User service implementation.
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;

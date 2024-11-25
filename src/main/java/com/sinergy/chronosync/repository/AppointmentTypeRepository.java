@@ -6,9 +6,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repository interface for managing {@link AppointmentType} entities.
+ * <p>
+ * This interface extends {@link JpaRepository} to provide CRUD operations for {@link AppointmentType} entities.
+ * Additional query method {@link #findByFirm_Id(Long)} is provided to retrieve appointment types by firm ID.
+ */
 @Repository
 public interface AppointmentTypeRepository extends JpaRepository<AppointmentType, Long> {
-
-	// Custom query to find appointment types by firm ID
 	List<AppointmentType> findByFirm_Id(Long id);
+
 }
+

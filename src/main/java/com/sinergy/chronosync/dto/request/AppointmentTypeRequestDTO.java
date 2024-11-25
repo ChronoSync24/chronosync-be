@@ -2,8 +2,9 @@ package com.sinergy.chronosync.dto.request;
 
 import com.sinergy.chronosync.model.appointmentType.AppointmentType;
 import com.sinergy.chronosync.model.appointmentType.Currency;
-import com.sinergy.chronosync.model.user.User;
+import com.sinergy.chronosync.model.firm.Firm;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  * DTO for creating or updating an appointment type.
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentTypeRequestDTO {
@@ -19,21 +21,22 @@ public class AppointmentTypeRequestDTO {
 	private Integer durationMinutes;
 	private Double price;
 	private Currency currency;
-	private String colourCode;
+	private String colorCode;
+	private Firm firm;
 
 	/**
 	 * Creates and returns AppointmentType model from Data Transfer Object.
 	 *
 	 * @return {@link AppointmentType} user model
 	 */
-	public AppointmentType toModel(){
-		AppointmentType appointmentType = new AppointmentType();
-		appointmentType.setName(name);
-		appointmentType.setDurationMinutes(durationMinutes);
-		appointmentType.setPrice(price);
-		appointmentType.setCurrency(currency);
-		appointmentType.setColourCode(colourCode);
-
-		return appointmentType;
+	public AppointmentType toModel() {
+		return AppointmentType.builder()
+			.name(name)
+			.durationMinutes(durationMinutes)
+			.price(price)
+			.currency(currency)
+			.colorCode(colorCode)
+			.firm(this.getFirm())
+			.build();
 	}
 }

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sinergy.chronosync.model.BaseEntity;
 import com.sinergy.chronosync.model.firm.Firm;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,13 +21,14 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "appointmentTypes")
 public class AppointmentType extends BaseEntity {
 
 	private String name;
 	private Integer durationMinutes;
 	private Double price;
-	private String colourCode;
+	private String colorCode;
 	@Enumerated(EnumType.STRING)
 	private Currency currency;
 

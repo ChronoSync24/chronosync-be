@@ -17,9 +17,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 	/**
 	 * Finds a user by their username.
 	 *
-	 * @param username {@link String} username of the user
-	 * @return {@link Optional} containing the {@link User} if found, empty otherwise
+	 * @param username {@link String} the username of the user to search for
+	 * @return {@link Optional} containing the {@link User} if found, or {@link Optional#empty()} if not
 	 */
 	Optional<User> findByUsername(String username);
-
 }

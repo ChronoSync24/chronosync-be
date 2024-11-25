@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.List;
 
 @Entity
@@ -18,13 +19,5 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "firms")
 public class Firm extends BaseEntity {
-
 	private String name;
-
-	@OneToMany(mappedBy = "firm", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonManagedReference
-	private List<AppointmentType> appointmentTypes;
-
-	@OneToMany(mappedBy = "firm", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<User> managers;
 }
