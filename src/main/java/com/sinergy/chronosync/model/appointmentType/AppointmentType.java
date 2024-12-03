@@ -1,17 +1,10 @@
 package com.sinergy.chronosync.model.appointmentType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sinergy.chronosync.model.BaseEntity;
 import com.sinergy.chronosync.model.firm.Firm;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.Entity;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Appointment type model class.
@@ -32,8 +25,8 @@ public class AppointmentType extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private Currency currency;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "firm_id")
-	@JsonBackReference
 	private Firm firm;
+
 }

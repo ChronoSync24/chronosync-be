@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AppointmentTypeRequestDTO {
 
+	private Long id;
 	private String name;
 	private Integer durationMinutes;
 	private Double price;

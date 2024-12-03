@@ -2,7 +2,6 @@ package com.sinergy.chronosync.controller;
 
 import com.sinergy.chronosync.dto.request.AppointmentTypeRequestDTO;
 import com.sinergy.chronosync.model.appointmentType.AppointmentType;
-import com.sinergy.chronosync.repository.UserRepository;
 import com.sinergy.chronosync.service.impl.AppointmentTypeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import java.util.List;
  * Controller for managing appointment types.
  * <p>
  * This controller provides endpoints for retrieving, creating, updating, and deleting appointment types.
- * It integrates with the {@link AppointmentTypeServiceImpl} and {@link UserRepository}.
  * </p>
  */
 @RestController
@@ -23,18 +21,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AppointmentTypeController {
 
-	private final AppointmentTypeServiceImpl appointmentTypeServiceImpl;
+	private final AppointmentTypeServiceImpl appointmentTypeService;
 
 	/**
 	 * Retrieves all appointment types associated with the current user's firm.
 	 *
+	 * <p>This endpoint is intended for users associated with a firm to view the
+	 * appointment types specific to their firm. It ensures data isolation by returning only
+	 * the appointment types linked to the logged-in user's firm.</p>
+	 *
 	 * @return {@link List} of {@link AppointmentType} objects associated with the current manager's firm.
 	 */
 	@GetMapping
-	public ResponseEntity<List<AppointmentType>> getAppointmentTypes(
-
-	) {
-		List<AppointmentType> appointmentTypes = appointmentTypeServiceImpl.getAppointmentTypesForCurrentUser();
+	public ResponseEntity<List<AppointmentType>> getAppointmentTypes() {
+		List<AppointmentType> appointmentTypes = appointmentTypeService.getAppointmentTypesForCurrentUser();
 		return ResponseEntity.ok(appointmentTypes);
 	}
 
@@ -48,23 +48,21 @@ public class AppointmentTypeController {
 	public ResponseEntity<AppointmentType> createAppointmentType(
 		@RequestBody AppointmentTypeRequestDTO request
 	) {
-		AppointmentType appointmentType = appointmentTypeServiceImpl.createAppointmentType(request);
+		AppointmentType appointmentType = appointmentTypeService.createAppointmentType(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(appointmentType);
 	}
 
 	/**
-	 * Updates an existing appointment type identified by its ID.
+	 * Updates an existing appointment type identified by its ID, or creates a new one if no ID is provided.
 	 *
-	 * @param id      {@link Long} ID of the appointment type to update
-	 * @param request {@link AppointmentTypeRequestDTO} containing updated details of the appointment type
-	 * @return {@link ResponseEntity} containing the updated {@link AppointmentType} and HTTP status
+	 * @param request {@link AppointmentTypeRequestDTO} containing details of the appointment type to update or create
+	 * @return {@link ResponseEntity} containing the updated or created {@link AppointmentType} and HTTP status
 	 */
 	@PutMapping
 	public ResponseEntity<AppointmentType> updateAppointmentType(
-		@RequestParam Long id,
 		@RequestBody AppointmentTypeRequestDTO request
 	) {
-		AppointmentType updatedAppointmentType = appointmentTypeServiceImpl.updateAppointmentType(id, request);
+		AppointmentType updatedAppointmentType = appointmentTypeService.updateAppointmentType(request);
 		return ResponseEntity.ok(updatedAppointmentType);
 	}
 
@@ -77,7 +75,7 @@ public class AppointmentTypeController {
 	public ResponseEntity<Void> deleteAppointmentType(
 		@RequestParam Long id
 	) {
-		appointmentTypeServiceImpl.deleteAppointmentType(id);
+		appointmentTypeService.deleteAppointmentType(id);
 		return ResponseEntity.noContent().build();
 	}
 }

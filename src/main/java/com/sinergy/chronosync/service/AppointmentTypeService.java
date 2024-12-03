@@ -27,11 +27,10 @@ public interface AppointmentTypeService {
 	/**
 	 * Updates an existing appointment type identified by its ID.
 	 *
-	 * @param id {@link Long} ID of the appointment type to update
 	 * @param requestDto {@link AppointmentTypeRequestDTO} containing updated details
 	 * @return {@link AppointmentType} representing the updated appointment type
 	 */
-	AppointmentType updateAppointmentType(Long id, AppointmentTypeRequestDTO requestDto);
+	AppointmentType updateAppointmentType(AppointmentTypeRequestDTO requestDto);
 
 	/**
 	 * Deletes an appointment type by its ID.
