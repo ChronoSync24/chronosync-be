@@ -1,6 +1,6 @@
 package com.sinergy.chronosync.service.impl;
 
-import com.sinergy.chronosync.builder.FirmFilterBuilder;
+import com.sinergy.chronosync.builder.AppointmentTypeFilterBuilder;
 import com.sinergy.chronosync.builder.UserFilterBuilder;
 import com.sinergy.chronosync.dto.request.AppointmentTypeRequestDTO;
 import com.sinergy.chronosync.exception.InvalidStateException;
@@ -9,14 +9,13 @@ import com.sinergy.chronosync.model.appointmentType.AppointmentType;
 import com.sinergy.chronosync.model.firm.Firm;
 import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.repository.AppointmentTypeRepository;
-import com.sinergy.chronosync.repository.FirmRepository;
 import com.sinergy.chronosync.repository.UserRepository;
 import com.sinergy.chronosync.service.AppointmentTypeService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Service implementation for managing appointment types.
@@ -29,7 +28,6 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 
 	private final AppointmentTypeRepository appointmentTypeRepository;
 	private final UserRepository userRepository;
-	private final FirmRepository firmRepository;
 
 	/**
 	 * Retrieves all appointment types associated with the current user's firm.
@@ -37,11 +35,11 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 	 * This method checks the current logged-in user's firm and returns
 	 * a list of {@link AppointmentType} objects linked to that firm's ID.
 	 *
-	 * @return {@link List} of {@link AppointmentType} objects associated with the current user's firm.
+	 * @return {@link Page} of {@link AppointmentType} objects associated with the current user's firm.
 	 * @throws UserNotFoundException if the user is not found.
 	 * @throws InvalidStateException if the user is not assigned to a firm.
 	 */
-	public List<AppointmentType> getAppointmentTypesForCurrentUser() {
+	public Page<AppointmentType> getAppointmentTypesForUser(int page, int size) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		UserFilterBuilder userFilterBuilder = UserFilterBuilder.builder()
@@ -55,15 +53,13 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 			throw new InvalidStateException("User is not assigned to a firm");
 		}
 
-		FirmFilterBuilder firmFilterBuilder = FirmFilterBuilder.builder()
-			.id(currentUser.getFirm().getId())
+		AppointmentTypeFilterBuilder filterBuilder = AppointmentTypeFilterBuilder.builder()
+			.firmId(currentUser.getFirm().getId())
 			.build();
 
-		Firm firm = firmRepository.findOne(firmFilterBuilder.toSpecification())
-			.orElseThrow(() -> new InvalidStateException("Firm not found"));
+		filterBuilder.setPageable(PageRequest.of(page, size));
 
-		return appointmentTypeRepository.findAll((root, query, criteriaBuilder) ->
-			criteriaBuilder.equal(root.get("firm"), firm));
+		return appointmentTypeRepository.findAll(filterBuilder.toSpecification(), filterBuilder.getPageable());
 	}
 
 	/**

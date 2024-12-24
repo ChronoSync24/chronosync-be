@@ -7,8 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 /**
  * Controller for managing appointment types.
@@ -30,11 +29,14 @@ public class AppointmentTypeController {
 	 * appointment types specific to their firm. It ensures data isolation by returning only
 	 * the appointment types linked to the logged-in user's firm.</p>
 	 *
-	 * @return {@link List} of {@link AppointmentType} objects associated with the current manager's firm.
+	 * @return {@link Page} of {@link AppointmentType} objects associated with the current manager's firm.
 	 */
 	@GetMapping
-	public ResponseEntity<List<AppointmentType>> getAppointmentTypes() {
-		List<AppointmentType> appointmentTypes = appointmentTypeService.getAppointmentTypesForCurrentUser();
+	public ResponseEntity<Page<AppointmentType>> getAppointmentTypes(
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size
+	) {
+		Page<AppointmentType> appointmentTypes = appointmentTypeService.getAppointmentTypesForUser(page, size);
 		return ResponseEntity.ok(appointmentTypes);
 	}
 

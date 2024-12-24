@@ -1,5 +1,6 @@
 package com.sinergy.chronosync.builder;
 
+import com.sinergy.chronosync.model.appointmentType.AppointmentType;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
