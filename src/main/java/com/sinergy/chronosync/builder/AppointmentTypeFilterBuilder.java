@@ -13,7 +13,7 @@ import java.util.List;
  * Filter builder for creating specifications to query {@link AppointmentType} entities.
  *
  * <p>This class extends the {@link BaseFilterBuilder} and implements the
- * filter criteria for user attributes such as name and firmId</p>
+ * filter criteria for user attributes</p>
  *
  * <p>The builder uses the {@link Specification} interface to dynamically
  * create predicates based on the provided filter values. If a filter value is

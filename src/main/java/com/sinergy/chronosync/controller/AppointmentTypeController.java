@@ -1,9 +1,11 @@
 package com.sinergy.chronosync.controller;
 
+import com.sinergy.chronosync.dto.request.BasePaginationRequest;
 import com.sinergy.chronosync.dto.request.AppointmentTypeRequestDTO;
 import com.sinergy.chronosync.model.appointmentType.AppointmentType;
 import com.sinergy.chronosync.service.impl.AppointmentTypeServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,20 +25,25 @@ public class AppointmentTypeController {
 	private final AppointmentTypeServiceImpl appointmentTypeService;
 
 	/**
-	 * Retrieves all appointment types associated with the current user's firm.
+	 * Retrieves a paginated list of appointment types associated with the current user's firm.
 	 *
-	 * <p>This endpoint is intended for users associated with a firm to view the
-	 * appointment types specific to their firm. It ensures data isolation by returning only
-	 * the appointment types linked to the logged-in user's firm.</p>
+	 * <p>This endpoint allows users associated with a firm to view appointment types
+	 * specific to their firm. It ensures data isolation by returning only the appointment
+	 * types linked to the logged-in user's firm.</p>
 	 *
-	 * @return {@link Page} of {@link AppointmentType} objects associated with the current manager's firm.
+	 * <p>The pagination details, such as the page number and page size, are provided
+	 * in the request body using the {@link BasePaginationRequest} class. Default values
+	 * are used if not specified.</p>
+	 *
 	 */
-	@GetMapping
+	@PostMapping
 	public ResponseEntity<Page<AppointmentType>> getAppointmentTypes(
-		@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "10") int size
+		@RequestBody BasePaginationRequest paginationRequest
 	) {
-		Page<AppointmentType> appointmentTypes = appointmentTypeService.getAppointmentTypesForUser(page, size);
+		int page = paginationRequest.getPage();
+		int size = paginationRequest.getPageSize();
+		PageRequest pageRequest = PageRequest.of(page, size);
+		Page<AppointmentType> appointmentTypes = appointmentTypeService.getUserAppointmentTypes(pageRequest);
 		return ResponseEntity.ok(appointmentTypes);
 	}
 

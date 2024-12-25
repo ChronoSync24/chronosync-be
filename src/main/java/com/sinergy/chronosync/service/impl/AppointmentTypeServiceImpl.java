@@ -39,7 +39,7 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 	 * @throws UserNotFoundException if the user is not found.
 	 * @throws InvalidStateException if the user is not assigned to a firm.
 	 */
-	public Page<AppointmentType> getAppointmentTypesForUser(int page, int size) {
+	public Page<AppointmentType> getUserAppointmentTypes(PageRequest pageRequest) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		UserFilterBuilder userFilterBuilder = UserFilterBuilder.builder()
@@ -57,7 +57,7 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 			.firmId(currentUser.getFirm().getId())
 			.build();
 
-		filterBuilder.setPageable(PageRequest.of(page, size));
+		filterBuilder.setPageable(pageRequest);
 
 		return appointmentTypeRepository.findAll(filterBuilder.toSpecification(), filterBuilder.getPageable());
 	}

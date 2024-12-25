@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for managing {@link AppointmentType} entities.
- * <p>
+ *
  * This interface extends {@link JpaRepository} to provide CRUD operations for {@link AppointmentType} entities.
  */
 @Repository

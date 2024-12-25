@@ -1,6 +1,7 @@
 package com.sinergy.chronosync.service;
 
 import com.sinergy.chronosync.dto.request.AppointmentTypeRequestDTO;
+import com.sinergy.chronosync.exception.InvalidStateException;
 import com.sinergy.chronosync.exception.UserNotFoundException;
 import com.sinergy.chronosync.model.appointmentType.AppointmentType;
 import com.sinergy.chronosync.model.firm.Firm;
@@ -61,21 +62,24 @@ class AppointmentTypeServiceTest {
 		SecurityContextHolder.setContext(securityContext);
 	}
 
+	private User assignFirmToUser(String username, Long id){
+		User mockUser = new User();
+		mockUser.setUsername(username);
+		Firm mockFirm = new Firm();
+		mockFirm.setId(id);
+		mockUser.setFirm(mockFirm);
+		return mockUser;
+	}
+
 	/**
-	 * Tests the getAppointmentTypesForUser method when the user is valid.
+	 * Tests the getUserAppointmentTypes method when the user is valid.
 	 *
 	 * @throws Exception if any error occurs during the test
 	 */
 	@Test
-	void getAppointmentTypesForUser_ValidUser_ReturnsPageOfAppointmentTypes() {
-		User mockUser = new User();
-		mockUser.setUsername("testUser");
-
-		Firm mockFirm = new Firm();
-		mockFirm.setId(1L);
-		mockUser.setFirm(mockFirm);
-
-		when(userRepository.findOne(Mockito.any(Specification.class))).thenReturn(Optional.of(mockUser));
+	void getUserAppointmentTypesValidUserReturnsPageOfAppointmentTypes() {
+		when(userRepository.findOne(Mockito.any(Specification.class)))
+			.thenReturn(Optional.of(assignFirmToUser("testUser", 1L)));
 
 		AppointmentType mockAppointmentType = new AppointmentType();
 		mockAppointmentType.setName("Test Appointment Type");
@@ -85,33 +89,35 @@ class AppointmentTypeServiceTest {
 		when(appointmentTypeRepository.findAll(Mockito.any(Specification.class), eq(pageRequest)))
 			.thenReturn(appointmentTypes);
 
-		Page<AppointmentType> result = appointmentTypeService.getAppointmentTypesForUser(0, 10);
+		Page<AppointmentType> result = appointmentTypeService.getUserAppointmentTypes(pageRequest);
 
 		assertNotNull(result);
 		assertEquals(1, result.getTotalElements());
 		assertEquals("Test Appointment Type", result.getContent().get(0).getName());
 
 		verify(userRepository, times(1)).findOne(Mockito.any(Specification.class));
-		verify(appointmentTypeRepository, times(1)).findAll(Mockito.any(Specification.class), eq(pageRequest));
+		verify(appointmentTypeRepository, times(1)).findAll(Mockito.any(Specification.class),
+			eq(pageRequest));
 	}
 
 	/**
-	 * Tests the getAppointmentTypesForUser method when the user is not found.
+	 * Tests the getUserAppointmentTypes method when the user is not found.
 	 *
 	 * @throws Exception if any error occurs during the test
 	 */
 	@Test
-	void getAppointmentTypesForUser_UserNotFound_ThrowsException() {
+	void getUserAppointmentTypesUserNotFoundThrowsException() {
 		when(userRepository.findOne(Mockito.any(Specification.class))).thenReturn(Optional.empty());
-
+		PageRequest pageRequest = PageRequest.of(0, 10);
 		UserNotFoundException thrownException = assertThrows(UserNotFoundException.class, () -> {
-			appointmentTypeService.getAppointmentTypesForUser(0, 10);
+			appointmentTypeService.getUserAppointmentTypes(pageRequest);
 		});
 
 		assertEquals("User not found", thrownException.getMessage());
 
 		verify(userRepository, times(1)).findOne(Mockito.any(Specification.class));
-		verify(appointmentTypeRepository, never()).findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+		verify(appointmentTypeRepository, never()).findAll(Mockito.any(Specification.class),
+			Mockito.any(Pageable.class));
 	}
 
 	/**
@@ -120,15 +126,10 @@ class AppointmentTypeServiceTest {
 	 * @throws Exception if any error occurs during the test
 	 */
 	@Test
-	void createAppointmentType_ValidRequest_CreatesAppointmentType() {
-		User mockUser = new User();
-		mockUser.setUsername("testUser");
+	void createAppointmentTypeValidRequestCreatesAppointmentType() {
 
-		Firm mockFirm = new Firm();
-		mockFirm.setId(1L);
-		mockUser.setFirm(mockFirm);
-
-		when(userRepository.findOne(Mockito.any(Specification.class))).thenReturn(Optional.of(mockUser));
+		when(userRepository.findOne(Mockito.any(Specification.class))).thenReturn(
+			Optional.of(assignFirmToUser("testUser", 1L)));
 
 		AppointmentTypeRequestDTO requestDto = new AppointmentTypeRequestDTO();
 		requestDto.setName("New Appointment");
@@ -149,6 +150,82 @@ class AppointmentTypeServiceTest {
 		assertEquals(100.0, createdAppointmentType.getPrice());
 
 		verify(userRepository, times(1)).findOne(Mockito.any(Specification.class));
+		verify(appointmentTypeRepository, times(1)).save(Mockito.any(AppointmentType.class));
+	}
+
+	/**
+	 * Tests the deleteAppointmentType method when the appointment type exists.
+	 */
+	@Test
+	void deleteAppointmentTypeValidIdDeletesAppointmentType() {
+		Long appointmentTypeId = 1L;
+
+		when(appointmentTypeRepository.existsById(appointmentTypeId)).thenReturn(true);
+
+		appointmentTypeService.deleteAppointmentType(appointmentTypeId);
+
+		verify(appointmentTypeRepository, times(1)).deleteById(appointmentTypeId);
+	}
+
+	/**
+	 * Tests the deleteAppointmentType method when the appointment type does not exist.
+	 */
+	@Test
+	void deleteAppointmentTypeInvalidIdThrowsException() {
+		Long appointmentTypeId = 1L;
+
+		when(appointmentTypeRepository.existsById(appointmentTypeId)).thenReturn(false);
+
+		InvalidStateException thrownException = assertThrows(InvalidStateException.class, () -> {
+			appointmentTypeService.deleteAppointmentType(appointmentTypeId);
+		});
+
+		assertEquals("Appointment type does not exist.", thrownException.getMessage());
+
+		verify(appointmentTypeRepository, never()).deleteById(appointmentTypeId);
+	}
+
+	/**
+	 * Tests the updateAppointmentType method with valid data.
+	 */
+	@Test
+	void updateAppointmentTypeValidRequestUpdatesAppointmentType() {
+		when(securityContext.getAuthentication()).thenReturn(authentication);
+		when(authentication.getName()).thenReturn("testUser");
+		SecurityContextHolder.setContext(securityContext);
+
+		Firm mockFirm = new Firm();
+		mockFirm.setId(1L);
+		when(userRepository.findOne(Mockito.any(Specification.class)))
+			.thenReturn(Optional.of(assignFirmToUser("testUser", mockFirm.getId())));
+
+		Long appointmentTypeId = 1L;
+		AppointmentTypeRequestDTO requestDto = new AppointmentTypeRequestDTO();
+		requestDto.setId(appointmentTypeId);
+		requestDto.setName("updatedName");
+		requestDto.setDurationMinutes(60);
+		requestDto.setPrice(200.0);
+
+		AppointmentType existingAppointmentType = new AppointmentType();
+		existingAppointmentType.setId(appointmentTypeId);
+		existingAppointmentType.setName("oldName");
+		existingAppointmentType.setDurationMinutes(30);
+		existingAppointmentType.setPrice(100.0);
+		existingAppointmentType.setFirm(mockFirm);
+
+		when(appointmentTypeRepository.findById(appointmentTypeId)).thenReturn(Optional.of(existingAppointmentType));
+		when(appointmentTypeRepository.save(Mockito.any(AppointmentType.class)))
+			.thenAnswer(invocation -> invocation.getArgument(0));
+
+		AppointmentType updatedAppointmentType = appointmentTypeService.updateAppointmentType(requestDto);
+
+		assertNotNull(updatedAppointmentType);
+		assertEquals("updatedName", updatedAppointmentType.getName());
+		assertEquals(60, updatedAppointmentType.getDurationMinutes());
+		assertEquals(200.0, updatedAppointmentType.getPrice());
+
+		verify(userRepository, times(1)).findOne(Mockito.any(Specification.class));
+		verify(appointmentTypeRepository, times(1)).findById(appointmentTypeId);
 		verify(appointmentTypeRepository, times(1)).save(Mockito.any(AppointmentType.class));
 	}
 }
