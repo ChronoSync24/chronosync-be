@@ -196,8 +196,11 @@ class AppointmentTypeServiceTest {
 
 		Firm mockFirm = new Firm();
 		mockFirm.setId(1L);
+		User mockUser = new User();
+		mockUser.setUsername("testUser");
+		mockUser.setFirm(mockFirm);
 		when(userRepository.findOne(Mockito.any(Specification.class)))
-			.thenReturn(Optional.of(assignFirmToUser("testUser", mockFirm.getId())));
+			.thenReturn(Optional.of(mockUser));
 
 		Long appointmentTypeId = 1L;
 		AppointmentTypeRequestDTO requestDto = new AppointmentTypeRequestDTO();
