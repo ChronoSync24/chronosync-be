@@ -1,15 +1,15 @@
 package com.sinergy.chronosync.controller;
 
-import com.sinergy.chronosync.dto.request.BasePaginationRequest;
 import com.sinergy.chronosync.dto.request.AppointmentTypeRequestDTO;
+import com.sinergy.chronosync.dto.request.BasePaginationRequest;
 import com.sinergy.chronosync.model.appointmentType.AppointmentType;
 import com.sinergy.chronosync.service.impl.AppointmentTypeServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
 
 /**
  * Controller for managing appointment types.

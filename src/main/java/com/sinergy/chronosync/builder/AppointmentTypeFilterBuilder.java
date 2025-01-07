@@ -6,6 +6,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.Builder;
 import org.springframework.data.jpa.domain.Specification;
+
 import java.util.ArrayList;
 import java.util.List;
 

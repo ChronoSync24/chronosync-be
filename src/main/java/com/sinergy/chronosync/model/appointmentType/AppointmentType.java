@@ -4,7 +4,6 @@ import com.sinergy.chronosync.model.BaseEntity;
 import com.sinergy.chronosync.model.firm.Firm;
 import jakarta.persistence.*;
 import lombok.*;
-import jakarta.persistence.Entity;
 
 /**
  * Appointment type model class.
