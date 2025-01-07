@@ -14,6 +14,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit tests for {@link AppointmentTypeFilterBuilder}.
+ *
+ * <p>Verifies the behavior of the {@link AppointmentTypeFilterBuilder} class,
+ * specifically its ability to convert filter criteria into a {@link Specification}
+ * for querying {@link AppointmentType} entities based on attributes such as firmId and name.</p>
+ *
+ * <p>Mock objects are utilized to simulate the database environment, including
+ * {@link Root}, {@link CriteriaBuilder}, {@link Predicate}, and {@link Path} instances.</p>
+ *
+ * <p>The tests ensure that the {@link AppointmentTypeFilterBuilder#toSpecification()} method
+ * constructs the appropriate predicates and combines them as expected using the criteria builder.</p>
+ */
 public class AppointmentTypeFilterBuilderTest {
 
 	@Mock

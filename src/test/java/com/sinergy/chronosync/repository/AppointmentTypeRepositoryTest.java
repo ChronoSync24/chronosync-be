@@ -11,10 +11,27 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for {@link AppointmentTypeRepository}.
+ *
+ * <p>Verifies the behavior of the {@link AppointmentTypeRepository} class,
+ * specifically its ability to interact with the database and retrieve {@link AppointmentType} entities
+ * using various methods such as {@link AppointmentTypeRepository#findAll()},
+ * {@link AppointmentTypeRepository#findAll(Specification)}, and {@link AppointmentTypeRepository#findOne(Specification)}.</p>
+ *
+ * <p>Mock objects are utilized to simulate the repository and database interactions.
+ * Tests cover scenarios such as retrieving all appointment types, filtering based on specifications,
+ * and handling cases with no matching results.</p>
+ *
+ * <p>The tests use {@link AppointmentTypeFilterBuilder} to create specifications for filtering
+ * appointment types by attributes such as name, ensuring that the repository methods
+ * correctly handle filtering logic.</p>
+ */
 class AppointmentTypeRepositoryTest {
 
 	@Mock
@@ -94,7 +111,7 @@ class AppointmentTypeRepositoryTest {
 			.toSpecification();
 
 		when(appointmentTypeRepository.findOne(Mockito.<Specification<AppointmentType>>any()))
-			.thenReturn(java.util.Optional.of(appointmentType));
+			.thenReturn(Optional.of(appointmentType));
 
 		java.util.Optional<AppointmentType> result = appointmentTypeRepository.findOne(spec);
 

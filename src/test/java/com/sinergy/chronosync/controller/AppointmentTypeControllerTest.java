@@ -48,7 +48,7 @@ class AppointmentTypeControllerTest {
 		int page = 0;
 		int size = 10;
 
-		AppointmentType appointmentType = new AppointmentType();
+		AppointmentType appointmentType = AppointmentType.builder().name("Test").colorCode("#FFFFFF").build();
 		Page<AppointmentType> mockPage = new PageImpl<>(List.of(appointmentType), PageRequest.of(page, size), 1);
 
 		BasePaginationRequest paginationRequest = new BasePaginationRequest();
@@ -74,8 +74,11 @@ class AppointmentTypeControllerTest {
 	 */
 	@Test
 	void createAppointmentTypeTest() {
-		AppointmentTypeRequestDTO requestDTO = new AppointmentTypeRequestDTO();
-		AppointmentType createdAppointmentType = new AppointmentType();
+		AppointmentTypeRequestDTO requestDTO = AppointmentTypeRequestDTO.builder()
+			.name("test")
+			.colorCode("#FFFFFF")
+			.build();
+		AppointmentType createdAppointmentType = AppointmentType.builder().name("Test").colorCode("#FFFFFF").build();
 
 		when(appointmentTypeService.createAppointmentType(requestDTO)).thenReturn(createdAppointmentType);
 
@@ -94,8 +97,11 @@ class AppointmentTypeControllerTest {
 	 */
 	@Test
 	void updateAppointmentTypeTest() {
-		AppointmentTypeRequestDTO requestDTO = new AppointmentTypeRequestDTO();
-		AppointmentType updatedAppointmentType = new AppointmentType();
+		AppointmentTypeRequestDTO requestDTO = AppointmentTypeRequestDTO.builder()
+			.name("test")
+			.colorCode("#FFFFFF")
+			.build();
+		AppointmentType updatedAppointmentType = AppointmentType.builder().name("Test").colorCode("#FFFFFF").build();
 
 		when(appointmentTypeService.updateAppointmentType(requestDTO)).thenReturn(updatedAppointmentType);
 
