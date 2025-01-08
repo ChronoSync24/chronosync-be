@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void enable(Long id) throws ServiceException {
 		UserFilterBuilder userFilterBuilder = UserFilterBuilder.builder().id(id).build();
-
 		userRepository.findOne(userFilterBuilder.toSpecification())
 			.ifPresentOrElse(user -> {
 				user.setIsEnabled(true);
