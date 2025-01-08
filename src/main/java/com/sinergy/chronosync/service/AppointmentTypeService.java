@@ -15,7 +15,7 @@ public interface AppointmentTypeService {
 	 *
 	 * @return {@link Page} of {@link AppointmentType} containing all appointment types for the user's firm
 	 */
-	Page<AppointmentType> getUserAppointmentTypes(PageRequest pageRequest);
+	Page<AppointmentType> getAppointmentTypes(PageRequest pageRequest);
 
 	/**
 	 * Creates a new appointment type and stores it in the database.

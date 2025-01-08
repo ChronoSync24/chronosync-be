@@ -57,7 +57,7 @@ class AppointmentTypeControllerTest {
 
 		PageRequest pageRequest = PageRequest.of(page, size);
 
-		when(appointmentTypeService.getUserAppointmentTypes(pageRequest)).thenReturn(mockPage);
+		when(appointmentTypeService.getAppointmentTypes(pageRequest)).thenReturn(mockPage);
 
 		ResponseEntity<Page<AppointmentType>> response = appointmentTypeController.getAppointmentTypes(paginationRequest);
 
@@ -65,7 +65,7 @@ class AppointmentTypeControllerTest {
 		assertThat(response.getBody()).isNotNull();
 		assertThat(response.getBody().getContent()).contains(appointmentType);
 
-		verify(appointmentTypeService, times(1)).getUserAppointmentTypes(pageRequest);
+		verify(appointmentTypeService, times(1)).getAppointmentTypes(pageRequest);
 	}
 
 	/**

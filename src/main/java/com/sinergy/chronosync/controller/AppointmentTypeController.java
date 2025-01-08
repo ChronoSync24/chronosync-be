@@ -43,7 +43,7 @@ public class AppointmentTypeController {
 		int page = paginationRequest.getPage();
 		int size = paginationRequest.getPageSize();
 		PageRequest pageRequest = PageRequest.of(page, size);
-		Page<AppointmentType> appointmentTypes = appointmentTypeService.getUserAppointmentTypes(pageRequest);
+		Page<AppointmentType> appointmentTypes = appointmentTypeService.getAppointmentTypes(pageRequest);
 		return ResponseEntity.ok(appointmentTypes);
 	}
 

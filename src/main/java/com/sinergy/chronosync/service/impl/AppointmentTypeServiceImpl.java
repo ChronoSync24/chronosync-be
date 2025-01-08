@@ -39,22 +39,9 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 	 * @throws UserNotFoundException if the user is not found.
 	 * @throws InvalidStateException if the user is not assigned to a firm.
 	 */
-	public Page<AppointmentType> getUserAppointmentTypes(PageRequest pageRequest) {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-		UserFilterBuilder userFilterBuilder = UserFilterBuilder.builder()
-			.username(username)
-			.build();
-
-		User currentUser = userRepository.findOne(userFilterBuilder.toSpecification())
-			.orElseThrow(() -> new UserNotFoundException("User not found"));
-
-		if (currentUser.getFirm() == null) {
-			throw new InvalidStateException("User is not assigned to a firm");
-		}
-
+	public Page<AppointmentType> getAppointmentTypes(PageRequest pageRequest) {
 		AppointmentTypeFilterBuilder filterBuilder = AppointmentTypeFilterBuilder.builder()
-			.firmId(currentUser.getFirm().getId())
+			.firmId(getAuthUserFirm().getId())
 			.build();
 
 		filterBuilder.setPageable(pageRequest);
@@ -72,22 +59,8 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 	 */
 	@Override
 	public AppointmentType createAppointmentType(AppointmentTypeRequestDTO requestDto) {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-		UserFilterBuilder userFilterBuilder = UserFilterBuilder.builder()
-			.username(username)
-			.build();
-
-		User user = userRepository.findOne(userFilterBuilder.toSpecification())
-			.orElseThrow(() -> new UserNotFoundException("User not found with username: " + username));
-
-		Firm firm = user.getFirm();
-		if (firm == null) {
-			throw new InvalidStateException("User is not associated with any firm.");
-		}
-
 		AppointmentType appointmentType = requestDto.toModel();
-		appointmentType.setFirm(firm);
+		appointmentType.setFirm(getAuthUserFirm());
 
 		return appointmentTypeRepository.save(appointmentType);
 	}
@@ -102,23 +75,12 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 	 */
 	@Override
 	public AppointmentType updateAppointmentType(AppointmentTypeRequestDTO requestDto) {
-
-		UserFilterBuilder filterBuilder = UserFilterBuilder.builder()
-			.username(SecurityContextHolder.getContext().getAuthentication().getName())
-			.build();
-
-		User manager = userRepository.findOne(filterBuilder.toSpecification())
-			.orElseThrow(() -> new UserNotFoundException("User not found"));
-
-		Firm firm = manager.getFirm();
-		if (firm == null) {
-			throw new InvalidStateException("User is not associated with any firm.");
-		}
-
 		AppointmentType existingAppointmentType = appointmentTypeRepository.findById(requestDto.getId())
-			.orElseThrow(() -> new InvalidStateException("Appointment type with ID " + requestDto.getId() + " does not exist."));
+			.orElseThrow(
+				() -> new InvalidStateException("Appointment type with ID " + requestDto.getId() + " does not exist.")
+			);
 
-		if (!existingAppointmentType.getFirm().equals(firm)) {
+		if (!existingAppointmentType.getFirm().getId().equals(getAuthUserFirm().getId())) {
 			throw new InvalidStateException("Appointment type does not belong to the current user's firm.");
 		}
 
@@ -143,5 +105,21 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 			throw new InvalidStateException("Appointment type does not exist.");
 		}
 		appointmentTypeRepository.deleteById(id);
+	}
+
+	private Firm getAuthUserFirm() {
+		UserFilterBuilder filterBuilder = UserFilterBuilder.builder()
+			.username(SecurityContextHolder.getContext().getAuthentication().getName())
+			.build();
+
+		User user = userRepository.findOne(filterBuilder.toSpecification())
+			.orElseThrow(() -> new UserNotFoundException("User not found"));
+
+		Firm firm = user.getFirm();
+		if (firm == null) {
+			throw new InvalidStateException("User is not associated with any firm.");
+		}
+
+		return firm;
 	}
 }

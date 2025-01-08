@@ -113,7 +113,7 @@ class AppointmentTypeRepositoryTest {
 	 */
 	@Test
 	void findOneTest() {
-		AppointmentType appointmentType = getAppointmentTypes().get(0);
+		AppointmentType appointmentType = getAppointmentTypes().getFirst();
 
 		Specification<AppointmentType> spec = AppointmentTypeFilterBuilder.builder()
 			.name("Consultation")
