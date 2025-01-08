@@ -22,7 +22,8 @@ import static org.mockito.Mockito.*;
  * <p>Verifies the behavior of the {@link AppointmentTypeRepository} class,
  * specifically its ability to interact with the database and retrieve {@link AppointmentType} entities
  * using various methods such as {@link AppointmentTypeRepository#findAll()},
- * {@link AppointmentTypeRepository#findAll(Specification)}, and {@link AppointmentTypeRepository#findOne(Specification)}.</p>
+ * {@link AppointmentTypeRepository#findAll(Specification)},
+ * and {@link AppointmentTypeRepository#findOne(Specification)}.</p>
  *
  * <p>Mock objects are utilized to simulate the repository and database interactions.
  * Tests cover scenarios such as retrieving all appointment types, filtering based on specifications,
@@ -69,13 +70,21 @@ class AppointmentTypeRepositoryTest {
 			.build()
 			.toSpecification();
 
-		List<AppointmentType> appointmentTypes = getAppointmentTypes();
+		AppointmentType sameNameApp = new AppointmentType();
+		sameNameApp.setName("Consultation");
 
-		when(appointmentTypeRepository.findAll(Mockito.<Specification<AppointmentType>>any())).thenReturn(appointmentTypes);
+		List<AppointmentType> appointmentTypes = List.of(sameNameApp);
+
+		when(appointmentTypeRepository.findAll(Mockito.<Specification<AppointmentType>>any()))
+			.thenReturn(appointmentTypes);
 
 		List<AppointmentType> result = appointmentTypeRepository.findAll(spec);
 
-		assertThat(result).hasSize(appointmentTypes.size());
+		assertThat(result)
+			.isNotNull()
+			.isNotEmpty()
+			.allMatch(type -> "Consultation".equals(type.getName()));
+
 		verify(appointmentTypeRepository, times(1)).findAll(spec);
 	}
 
@@ -99,7 +108,8 @@ class AppointmentTypeRepositoryTest {
 	}
 
 	/**
-	 * Tests the {@link AppointmentTypeRepository#findOne(Specification)} method when a matching appointment type is found.
+	 * Tests the {@link AppointmentTypeRepository#findOne(Specification)} method when
+	 * a matching appointment type is found.
 	 */
 	@Test
 	void findOneTest() {
