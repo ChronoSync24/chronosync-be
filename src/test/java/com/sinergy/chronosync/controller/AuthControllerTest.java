@@ -1,6 +1,6 @@
 package com.sinergy.chronosync.controller;
 
-import com.sinergy.chronosync.dto.request.AuthenticationRequestDTO;
+import com.sinergy.chronosync.dto.request.LoginRequestDTO;
 import com.sinergy.chronosync.dto.request.UserRegisterRequestDTO;
 import com.sinergy.chronosync.dto.response.AuthenticationResponse;
 import com.sinergy.chronosync.dto.response.UserRegisterResponseDTO;
@@ -62,16 +62,16 @@ class AuthControllerTest {
 	}
 
 	/**
-	 * Tests the {@link AuthController#authenticate(AuthenticationRequestDTO)} method.
+	 * Tests the {@link AuthController#authenticate(LoginRequestDTO)} method.
 	 * Verifies that the authentication service is called with the correct request
 	 * and that the response contains a valid JWT.
 	 */
 	@Test
 	void authenticateUserTest() {
-		AuthenticationRequestDTO request = new AuthenticationRequestDTO("testUser", "password123");
+		LoginRequestDTO request = new LoginRequestDTO("testUser", "password123");
 		AuthenticationResponse response = new AuthenticationResponse("jwtToken123");
 
-		when(authenticationService.authenticate(any(AuthenticationRequestDTO.class))).thenReturn(response);
+		when(authenticationService.authenticate(any(LoginRequestDTO.class))).thenReturn(response);
 
 		ResponseEntity<AuthenticationResponse> result = authController.authenticate(request);
 
@@ -79,6 +79,6 @@ class AuthControllerTest {
 		assertThat(result.getBody()).isNotNull();
 		assertThat(result.getBody().getJwtString()).isEqualTo("jwtToken123");
 
-		verify(authenticationService, times(1)).authenticate(any(AuthenticationRequestDTO.class));
+		verify(authenticationService, times(1)).authenticate(any(LoginRequestDTO.class));
 	}
 }

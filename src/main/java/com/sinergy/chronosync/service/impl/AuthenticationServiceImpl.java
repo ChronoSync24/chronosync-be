@@ -2,7 +2,7 @@ package com.sinergy.chronosync.service.impl;
 
 import com.sinergy.chronosync.builder.TokenFilterBuilder;
 import com.sinergy.chronosync.builder.UserFilterBuilder;
-import com.sinergy.chronosync.dto.request.AuthenticationRequestDTO;
+import com.sinergy.chronosync.dto.request.LoginRequestDTO;
 import com.sinergy.chronosync.dto.request.UserRegisterRequestDTO;
 import com.sinergy.chronosync.dto.response.AuthenticationResponse;
 import com.sinergy.chronosync.dto.response.UserRegisterResponseDTO;
@@ -52,11 +52,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	/**
 	 * Authenticates provided user with username and password.
 	 *
-	 * @param request {@link AuthenticationRequestDTO} authentication request
+	 * @param request {@link LoginRequestDTO} authentication request
 	 * @return {@link AuthenticationResponse} JSON web token
 	 */
 	@Override
-	public AuthenticationResponse authenticate(AuthenticationRequestDTO request) {
+	public AuthenticationResponse authenticate(LoginRequestDTO request) {
 		try {
 			authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())

@@ -2,7 +2,7 @@ package com.sinergy.chronosync.service;
 
 import com.sinergy.chronosync.builder.TokenFilterBuilder;
 import com.sinergy.chronosync.builder.UserFilterBuilder;
-import com.sinergy.chronosync.dto.request.AuthenticationRequestDTO;
+import com.sinergy.chronosync.dto.request.LoginRequestDTO;
 import com.sinergy.chronosync.dto.request.UserRegisterRequestDTO;
 import com.sinergy.chronosync.dto.response.AuthenticationResponse;
 import com.sinergy.chronosync.dto.response.UserRegisterResponseDTO;
@@ -90,12 +90,12 @@ class AuthenticationServiceTest {
 	}
 
 	/**
-	 * Tests the {@link AuthenticationServiceImpl#authenticate(AuthenticationRequestDTO)} method
+	 * Tests the {@link AuthenticationServiceImpl#authenticate(LoginRequestDTO)} method
 	 * with valid user credentials. Verifies that a JWT token is generated and returned in the response.
 	 */
 	@Test
 	void authenticateValidUserTest() {
-		AuthenticationRequestDTO request = new AuthenticationRequestDTO("test", "password123");
+		LoginRequestDTO request = new LoginRequestDTO("test", "password123");
 		User user = new User();
 		user.setUsername("test");
 		user.setId(1L);
@@ -118,13 +118,13 @@ class AuthenticationServiceTest {
 	}
 
 	/**
-	 * Tests the {@link AuthenticationServiceImpl#authenticate(AuthenticationRequestDTO)} method
+	 * Tests the {@link AuthenticationServiceImpl#authenticate(LoginRequestDTO)} method
 	 * when a valid user is authenticated but lacks an existing token. Verifies that a new token is created
 	 * and saved in the repository.
 	 */
 	@Test
 	void authenticateValidUserWithNewTokenTest() {
-		AuthenticationRequestDTO request = new AuthenticationRequestDTO("test", "password123");
+		LoginRequestDTO request = new LoginRequestDTO("test", "password123");
 		User user = new User();
 		user.setUsername("test");
 		user.setId(1L);
@@ -147,12 +147,12 @@ class AuthenticationServiceTest {
 	}
 
 	/**
-	 * Tests the {@link AuthenticationServiceImpl#authenticate(AuthenticationRequestDTO)} method
+	 * Tests the {@link AuthenticationServiceImpl#authenticate(LoginRequestDTO)} method
 	 * with invalid user credentials. Verifies that a {@link ServiceException} is thrown for invalid credentials.
 	 */
 	@Test
 	void invalidCredentialsTest() {
-		AuthenticationRequestDTO request = new AuthenticationRequestDTO("invalidUser", "password123");
+		LoginRequestDTO request = new LoginRequestDTO("invalidUser", "password123");
 
 		when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
 			.thenThrow(new BadCredentialsException("Invalid credentials."));
@@ -164,12 +164,12 @@ class AuthenticationServiceTest {
 	}
 
 	/**
-	 * Tests the {@link AuthenticationServiceImpl#authenticate(AuthenticationRequestDTO)} method
+	 * Tests the {@link AuthenticationServiceImpl#authenticate(LoginRequestDTO)} method
 	 * when authentication fails due to a missing user. Verifies that a {@link ServiceException} is thrown.
 	 */
 	@Test
 	void authenticationFailedTest() {
-		AuthenticationRequestDTO request = new AuthenticationRequestDTO("invalidUser", "password123");
+		LoginRequestDTO request = new LoginRequestDTO("invalidUser", "password123");
 
 		when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
 		when(userRepository.findOne(
