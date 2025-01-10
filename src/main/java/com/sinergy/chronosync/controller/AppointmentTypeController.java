@@ -36,7 +36,7 @@ public class AppointmentTypeController {
 	 * are used if not specified.</p>
 	 *
 	 */
-	@PostMapping
+	@PostMapping("/get")
 	public ResponseEntity<Page<AppointmentType>> getAppointmentTypes(
 		@RequestBody BasePaginationRequest paginationRequest
 	) {
@@ -53,7 +53,7 @@ public class AppointmentTypeController {
 	 * @param request {@link AppointmentTypeRequestDTO} containing the details of the new appointment type
 	 * @return created {@link AppointmentType} along with an HTTP status of 201 (Created)
 	 */
-	@PostMapping
+	@PostMapping("/create")
 	public ResponseEntity<AppointmentType> createAppointmentType(
 		@RequestBody AppointmentTypeRequestDTO request
 	) {

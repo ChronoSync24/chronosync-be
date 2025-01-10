@@ -1,6 +1,6 @@
 package com.sinergy.chronosync.service;
 
-import com.sinergy.chronosync.dto.request.AuthenticationRequestDTO;
+import com.sinergy.chronosync.dto.request.LoginRequestDTO;
 import com.sinergy.chronosync.dto.request.UserRegisterRequestDTO;
 import com.sinergy.chronosync.dto.response.AuthenticationResponse;
 import com.sinergy.chronosync.dto.response.UserRegisterResponseDTO;
@@ -21,8 +21,8 @@ public interface AuthenticationService {
 	/**
 	 * Authenticates provided user with username and password.
 	 *
-	 * @param request {@link AuthenticationRequestDTO} authentication request
+	 * @param request {@link LoginRequestDTO} authentication request
 	 * @return {@link AuthenticationResponse} JSON web token
 	 */
-	AuthenticationResponse authenticate(AuthenticationRequestDTO request);
+	AuthenticationResponse authenticate(LoginRequestDTO request);
 }

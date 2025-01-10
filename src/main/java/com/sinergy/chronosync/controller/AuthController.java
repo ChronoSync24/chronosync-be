@@ -1,6 +1,6 @@
 package com.sinergy.chronosync.controller;
 
-import com.sinergy.chronosync.dto.request.AuthenticationRequestDTO;
+import com.sinergy.chronosync.dto.request.LoginRequestDTO;
 import com.sinergy.chronosync.dto.request.UserRegisterRequestDTO;
 import com.sinergy.chronosync.dto.response.AuthenticationResponse;
 import com.sinergy.chronosync.dto.response.UserRegisterResponseDTO;
@@ -38,12 +38,12 @@ public class AuthController {
 	/**
 	 * Authenticates user with provided credentials.
 	 *
-	 * @param request {@link AuthenticationRequestDTO} authentication request with credentials
+	 * @param request {@link LoginRequestDTO} authentication request with credentials
 	 * @return {@link ResponseEntity<AuthenticationResponse>} authentication response with JWT
 	 */
-	@PostMapping("/authenticate")
+	@PostMapping("/login")
 	public ResponseEntity<AuthenticationResponse> authenticate(
-		@RequestBody AuthenticationRequestDTO request
+		@RequestBody LoginRequestDTO request
 	) {
 		return ResponseEntity.ok(authenticationService.authenticate(request));
 	}
