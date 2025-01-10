@@ -34,8 +34,9 @@ public class WebSecurityConfig {
 	private final JwtAuthenticationFilterConfig jwtAuthenticationFilterConfig;
 	private final AuthenticationProvider authenticationProvider;
 	private final LogoutHandler logoutHandler;
+	private final CorsConfig corsConfig;
 
-	private static final List<String> WHITE_LIST_URL = List.of("/api/v1/auth/**");
+	private static final List<String> WHITE_LIST_URL = List.of("/api/v1/auth/login");
 
 	private static final List<String> EMPLOYEE_LIST_URL = List.of(
 		"/api/v1/employee/**"
@@ -44,6 +45,7 @@ public class WebSecurityConfig {
 	private static final List<String> MANAGER_LIST_URL = CollectionUtils.concat(
 		EMPLOYEE_LIST_URL,
 		List.of(
+			"/api/v1/auth/register",
 			"/api/v1/test/test-manager",
 			"/api/v1/appointmenttype/**"
 		)
@@ -78,6 +80,7 @@ public class WebSecurityConfig {
 				.requestMatchers(MANAGER_LIST_URL.toArray(String[]::new)).hasRole(UserRole.MANAGER.name())
 //				.requestMatchers(EMPLOYEE_LIST_URL).hasRole(UserRole.EMPLOYEE.name())
 			)
+			.cors(c -> c.configurationSource(corsConfig))
 			.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
 			.authenticationProvider(authenticationProvider)
 			.addFilterBefore(jwtAuthenticationFilterConfig, UsernamePasswordAuthenticationFilter.class)
