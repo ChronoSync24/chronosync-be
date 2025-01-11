@@ -1,7 +1,6 @@
 package com.sinergy.chronosync.service.impl;
 
-import com.sinergy.chronosync.dto.request.UserCreateRequestDTO;
-import com.sinergy.chronosync.dto.response.UserCreateResponseDTO;
+import com.sinergy.chronosync.dto.request.UserRequestDTO;
 import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.repository.UserRepository;
 import com.sinergy.chronosync.service.UserService;
@@ -22,16 +21,17 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * Creates new user.
 	 *
-	 * @param request {@link UserCreateRequestDTO} user create request
-	 * @return {@link UserCreateResponseDTO} user create response
+	 * @param request {@link UserRequestDTO} user create request
+	 * @return {@link User} user create response
 	 */
 	@Override
-	public UserCreateResponseDTO create(UserCreateRequestDTO request) {
-		User user = request.toModel();
+	public User create(UserRequestDTO request) {
+		User user = request.toModel(false);
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-		User newUser = userRepository.save(user);
+		User createdUser = userRepository.save(user);
+		createdUser.setPassword(null);
 
-		return new UserCreateResponseDTO(newUser.getId(), newUser.getUsername());
+		return createdUser;
 	}
 }

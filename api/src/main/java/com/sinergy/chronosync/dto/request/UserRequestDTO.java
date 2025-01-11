@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCreateRequestDTO {
+public class UserRequestDTO {
 
 	private String firstName;
 	private String lastName;
@@ -37,9 +37,10 @@ public class UserCreateRequestDTO {
 	/**
 	 * Creates and returns User model from Data Transfer Object.
 	 *
+	 * @param isEnabled {@link Boolean} is user account enabled
 	 * @return {@link User} user model
 	 */
-	public User toModel() {
+	public User toModel(Boolean isEnabled) {
 		User user = new User();
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
@@ -50,7 +51,7 @@ public class UserCreateRequestDTO {
 		user.setUsername(this.getUsername());
 		user.setPassword(password);
 		user.setRole(role);
-		user.setIsEnabled(false);
+		user.setIsEnabled(isEnabled);
 		user.setIsLocked(false);
 
 		return user;

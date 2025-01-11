@@ -1,7 +1,7 @@
 package com.sinergy.chronosync.service;
 
-import com.sinergy.chronosync.dto.request.UserCreateRequestDTO;
-import com.sinergy.chronosync.dto.response.UserCreateResponseDTO;
+import com.sinergy.chronosync.dto.request.UserRequestDTO;
+import com.sinergy.chronosync.model.user.User;
 
 /**
  * User service interface class.
@@ -11,8 +11,8 @@ public interface UserService {
 	/**
 	 * Creates new user.
 	 *
-	 * @param request {@link UserCreateRequestDTO} user create request
-	 * @return {@link UserCreateResponseDTO} user create response
+	 * @param request {@link UserRequestDTO} user create request
+	 * @return {@link User} user create response
 	 */
-	UserCreateResponseDTO create(UserCreateRequestDTO request);
+	User create(UserRequestDTO request);
 }
