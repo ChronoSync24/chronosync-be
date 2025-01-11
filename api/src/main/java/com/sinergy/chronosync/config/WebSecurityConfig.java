@@ -45,7 +45,7 @@ public class WebSecurityConfig {
 	private static final List<String> MANAGER_LIST_URL = CollectionUtils.concat(
 		EMPLOYEE_LIST_URL,
 		List.of(
-			"/api/v1/auth/register",
+			"/api/v1/user/create",
 			"/api/v1/test/test-manager",
 			"/api/v1/appointmenttype/**"
 		)

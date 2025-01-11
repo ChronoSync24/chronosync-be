@@ -1,9 +1,7 @@
 package com.sinergy.chronosync.controller;
 
 import com.sinergy.chronosync.dto.request.LoginRequestDTO;
-import com.sinergy.chronosync.dto.request.UserRegisterRequestDTO;
 import com.sinergy.chronosync.dto.response.AuthenticationResponse;
-import com.sinergy.chronosync.dto.response.UserRegisterResponseDTO;
 import com.sinergy.chronosync.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
 	private final AuthenticationService authenticationService;
-
-	/**
-	 * Registers new user.
-	 *
-	 * @param request {@link UserRegisterRequestDTO} user register request
-	 * @return {@link ResponseEntity<UserRegisterResponseDTO>} user registration response
-	 */
-	@PostMapping("/register")
-	public ResponseEntity<UserRegisterResponseDTO> register(
-		@RequestBody UserRegisterRequestDTO request
-	) {
-		return ResponseEntity.ok(authenticationService.register(request));
-	}
 
 	/**
 	 * Authenticates user with provided credentials.

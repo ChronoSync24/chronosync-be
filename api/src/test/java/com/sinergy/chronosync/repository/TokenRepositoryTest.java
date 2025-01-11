@@ -20,14 +20,6 @@ import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for {@link TokenRepository}.
- *
- * <p>This test class verifies the behavior of {@link TokenRepository} for various operations
- * involving token retrieval, including fetching all tokens, finding tokens by specific criteria,
- * and handling cases where no tokens match the search specifications.</p>
- *
- * <p>These tests validate the repository's ability to find tokens using filter criteria such as
- * JWT string and user association, ensuring that the repository returns expected results
- * based on the specifications provided.</p>
  */
 class TokenRepositoryTest {
 

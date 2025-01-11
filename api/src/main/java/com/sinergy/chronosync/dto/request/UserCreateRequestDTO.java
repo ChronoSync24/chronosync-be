@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegisterRequestDTO {
+public class UserCreateRequestDTO {
 
 	private String firstName;
 	private String lastName;
