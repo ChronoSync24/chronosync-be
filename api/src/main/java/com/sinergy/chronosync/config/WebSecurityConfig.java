@@ -39,7 +39,7 @@ public class WebSecurityConfig {
 	private static final List<String> WHITE_LIST_URL = List.of("/api/v1/auth/login");
 
 	private static final List<String> EMPLOYEE_LIST_URL = List.of(
-		"/api/v1/employee/**"
+		"/api/v1/auth/logout"
 	);
 
 	private static final List<String> MANAGER_LIST_URL = CollectionUtils.concat(
@@ -47,7 +47,7 @@ public class WebSecurityConfig {
 		List.of(
 			"/api/v1/user/create",
 			"/api/v1/test/test-manager",
-			"/api/v1/appointmenttype/**"
+			"/api/v1/appointment-type/**"
 		)
 	);
 
@@ -78,7 +78,7 @@ public class WebSecurityConfig {
 				.requestMatchers(WHITE_LIST_URL.toArray(String[]::new)).permitAll()
 				.requestMatchers(ADMIN_LIST_URL.toArray(String[]::new)).hasRole(UserRole.ADMINISTRATOR.name())
 				.requestMatchers(MANAGER_LIST_URL.toArray(String[]::new)).hasRole(UserRole.MANAGER.name())
-//				.requestMatchers(EMPLOYEE_LIST_URL).hasRole(UserRole.EMPLOYEE.name())
+				.requestMatchers(EMPLOYEE_LIST_URL.toArray(String[]::new)).hasRole(UserRole.EMPLOYEE.name())
 			)
 			.cors(c -> c.configurationSource(corsConfig))
 			.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

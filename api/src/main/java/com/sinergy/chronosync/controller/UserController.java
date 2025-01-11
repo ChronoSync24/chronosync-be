@@ -5,7 +5,10 @@ import com.sinergy.chronosync.dto.response.UserCreateResponseDTO;
 import com.sinergy.chronosync.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * User controller class.
@@ -28,16 +31,5 @@ public class UserController {
 		@RequestBody UserCreateRequestDTO request
 	) {
 		return ResponseEntity.ok(userService.create(request));
-	}
-
-	/**
-	 * Enables user account with provided id.
-	 *
-	 * @param id {@link Long} user id
-	 */
-	@PostMapping("/enable")
-	public ResponseEntity<String> enable(@RequestParam Long id) {
-		userService.enable(id);
-		return ResponseEntity.ok("User successfully enabled.");
 	}
 }

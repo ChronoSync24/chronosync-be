@@ -54,24 +54,4 @@ class UserControllerTest {
 
 		verify(userService, times(1)).create(any(UserCreateRequestDTO.class));
 	}
-
-	/**
-	 * Tests the {@link UserController#enable(Long)} method.
-	 * Verifies that the user service is called with the correct user ID
-	 * and that the response is properly constructed.
-	 */
-	@Test
-	void enableUserTest() {
-		Long userId = 1L;
-
-		doNothing().when(userService).enable(userId);
-
-		ResponseEntity<String> result = userController.enable(userId);
-
-		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(result.getBody()).isNotNull();
-		assertThat(result.getBody()).isEqualTo("User successfully enabled.");
-
-		verify(userService, times(1)).enable(userId);
-	}
 }
