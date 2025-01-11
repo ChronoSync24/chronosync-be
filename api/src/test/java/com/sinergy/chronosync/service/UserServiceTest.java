@@ -1,7 +1,6 @@
 package com.sinergy.chronosync.service;
 
-import com.sinergy.chronosync.dto.request.UserCreateRequestDTO;
-import com.sinergy.chronosync.dto.response.UserCreateResponseDTO;
+import com.sinergy.chronosync.dto.request.UserRequestDTO;
 import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.repository.UserRepository;
 import com.sinergy.chronosync.service.impl.UserServiceImpl;
@@ -36,23 +35,23 @@ class UserServiceTest {
 	}
 
 	/**
-	 * Tests the {@link UserServiceImpl#create(UserCreateRequestDTO)} method.
+	 * Tests the {@link UserServiceImpl#create(UserRequestDTO)} method.
 	 * Verifies that a user is created successfully and that the correct methods are called
 	 * for encoding the password and saving the user to the repository.
 	 */
 	@Test
 	void createUserTest() {
-		UserCreateRequestDTO request = new UserCreateRequestDTO();
+		UserRequestDTO request = new UserRequestDTO();
 		request.setFirstName("Test");
 		request.setLastName("Test");
 
-		User user = request.toModel();
+		User user = request.toModel(false);
 		user.setPassword("encodedPassword");
 
 		when(passwordEncoder.encode(request.getPassword())).thenReturn("encodedPassword");
 		when(userRepository.save(any(User.class))).thenReturn(user);
 
-		UserCreateResponseDTO response = userService.create(request);
+		User response = userService.create(request);
 
 		assertThat(response.getUsername()).isEqualTo(request.getUsername());
 

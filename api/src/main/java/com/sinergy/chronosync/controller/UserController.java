@@ -1,7 +1,8 @@
 package com.sinergy.chronosync.controller;
 
-import com.sinergy.chronosync.dto.request.UserCreateRequestDTO;
-import com.sinergy.chronosync.dto.response.UserCreateResponseDTO;
+import com.sinergy.chronosync.dto.request.UserRequestDTO;
+import com.sinergy.chronosync.dto.response.UserResponseDTO;
+import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,12 @@ public class UserController {
 	/**
 	 * Creates new user.
 	 *
-	 * @param request {@link UserCreateRequestDTO} user create request
-	 * @return {@link ResponseEntity<UserCreateResponseDTO>} user creation response
+	 * @param request {@link UserRequestDTO} user create request
+	 * @return {@link ResponseEntity< UserResponseDTO >} user creation response
 	 */
 	@PostMapping("/create")
-	public ResponseEntity<UserCreateResponseDTO> create(
-		@RequestBody UserCreateRequestDTO request
+	public ResponseEntity<User> create(
+		@RequestBody UserRequestDTO request
 	) {
 		return ResponseEntity.ok(userService.create(request));
 	}

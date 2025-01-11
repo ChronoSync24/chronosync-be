@@ -1,7 +1,7 @@
 package com.sinergy.chronosync.controller;
 
-import com.sinergy.chronosync.dto.request.UserCreateRequestDTO;
-import com.sinergy.chronosync.dto.response.UserCreateResponseDTO;
+import com.sinergy.chronosync.dto.request.UserRequestDTO;
+import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,27 +31,29 @@ class UserControllerTest {
 	}
 
 	/**
-	 * Tests the {@link UserController#create(UserCreateRequestDTO)} method.
+	 * Tests the {@link UserController#create(UserRequestDTO)} method.
 	 * Verifies that the creation service is called with the correct request
 	 * and that the response is properly constructed.
 	 */
 	@Test
 	void createUserTest() {
-		UserCreateRequestDTO request = new UserCreateRequestDTO();
+		UserRequestDTO request = new UserRequestDTO();
 		request.setPassword("password123");
 		request.setFirstName("John");
 		request.setLastName("Doe");
 
-		UserCreateResponseDTO response = new UserCreateResponseDTO(1L, "testUser");
+		User response = new User();
+		response.setId(1L);
+		response.setUsername("testUser");
 
-		when(userService.create(any(UserCreateRequestDTO.class))).thenReturn(response);
+		when(userService.create(any(UserRequestDTO.class))).thenReturn(response);
 
-		ResponseEntity<UserCreateResponseDTO> result = userController.create(request);
+		ResponseEntity<User> result = userController.create(request);
 
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(result.getBody()).isNotNull();
 		assertThat(result.getBody().getUsername()).isEqualTo("testUser");
 
-		verify(userService, times(1)).create(any(UserCreateRequestDTO.class));
+		verify(userService, times(1)).create(any(UserRequestDTO.class));
 	}
 }
