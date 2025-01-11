@@ -1,33 +1,60 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# General ignore rules
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+
+# api ignore rules
+api/HELP.md
+api/target/
+!api/.mvn/wrapper/maven-wrapper.jar
+!**/api/src/main/**/target/
+!**/api/src/test/**/target/
 
 ### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+api/.apt_generated
+api/.classpath
+api/.factorypath
+api/.project
+api/.settings
+api/.springBeans
+api/.sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+api/.idea
+api/*.iws
+api/*.iml
+api/*.ipr
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+api/nbproject/private/
+api/nbbuild/
+api/dist/
+api/nbdist/
+api/.nb-gradle/
+api/build/
+!**/api/src/main/**/build/
+!**/api/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+api/.vscode/
+
+# gui ignore rules
+gui/node_modules/
+gui/build/
+gui/dist/
+gui/.env
+gui/.env.*
+gui/.vscode/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Temporary OS and IDE files
+*.bak
+*.~*
