@@ -22,9 +22,6 @@ import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for {@link AppointmentTypeController}.
- *
- * <p>This test class validates the functionality of the {@link AppointmentTypeController},
- * specifically testing CRUD operations for appointment types.</p>
  */
 class AppointmentTypeControllerTest {
 

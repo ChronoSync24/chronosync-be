@@ -1,6 +1,7 @@
 package com.sinergy.chronosync.service;
 
-import org.hibernate.service.spi.ServiceException;
+import com.sinergy.chronosync.dto.request.UserRequestDTO;
+import com.sinergy.chronosync.model.user.User;
 
 /**
  * User service interface class.
@@ -8,9 +9,10 @@ import org.hibernate.service.spi.ServiceException;
 public interface UserService {
 
 	/**
-	 * Enables user account with provided id.
+	 * Creates new user.
 	 *
-	 * @param id {@link Long} user id
+	 * @param request {@link UserRequestDTO} user create request
+	 * @return {@link User} user create response
 	 */
-	void enable(Long id) throws ServiceException;
+	User create(UserRequestDTO request);
 }

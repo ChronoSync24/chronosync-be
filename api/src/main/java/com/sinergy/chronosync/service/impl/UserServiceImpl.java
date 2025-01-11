@@ -1,10 +1,11 @@
 package com.sinergy.chronosync.service.impl;
 
-import com.sinergy.chronosync.builder.UserFilterBuilder;
+import com.sinergy.chronosync.dto.request.UserRequestDTO;
+import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.repository.UserRepository;
 import com.sinergy.chronosync.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.ServiceException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,22 +16,22 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	/**
-	 * Enables a user identified by id.
+	 * Creates new user.
 	 *
-	 * @param id {@link Long} user id
-	 * @throws ServiceException if no user with specified id is found
+	 * @param request {@link UserRequestDTO} user create request
+	 * @return {@link User} user create response
 	 */
 	@Override
-	public void enable(Long id) throws ServiceException {
-		UserFilterBuilder userFilterBuilder = UserFilterBuilder.builder().id(id).build();
-		userRepository.findOne(userFilterBuilder.toSpecification())
-			.ifPresentOrElse(user -> {
-				user.setIsEnabled(true);
-				userRepository.save(user);
-			}, () -> {
-				throw new ServiceException("User with provided id is not found.");
-			});
+	public User create(UserRequestDTO request) {
+		User user = request.toModel(false);
+		user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+		User createdUser = userRepository.save(user);
+		createdUser.setPassword(null);
+
+		return createdUser;
 	}
 }

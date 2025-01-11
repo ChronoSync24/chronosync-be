@@ -25,10 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for {@link LogoutService}.
- *
- * <p>This test class verifies the behavior of {@link LogoutService} for various scenarios,
- * including successful logout and handling of invalid or missing JWT tokens.</p>
+ * Unit tests for {@link LogoutServiceImpl}.
  */
 class LogoutServiceTest {
 

@@ -1,9 +1,9 @@
-import { UserRole } from '../../../models/user/UserRole';
+import { UserRole } from '../../models/user/UserRole';
 
 /**
  * Register request DTO.
  */
-export interface RegisterRequestDTO {
+export interface UserRequestDTO {
 	firstName: string;
 	lastName: string;
 	identificationNumber: string;

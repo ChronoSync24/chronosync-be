@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for the AppointmentTypeService.
+ * Unit tests for {@link AppointmentTypeServiceImpl}.
  */
 class AppointmentTypeServiceTest {
 

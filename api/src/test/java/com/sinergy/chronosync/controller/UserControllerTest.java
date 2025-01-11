@@ -1,5 +1,7 @@
 package com.sinergy.chronosync.controller;
 
+import com.sinergy.chronosync.dto.request.UserRequestDTO;
+import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,9 +16,6 @@ import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for {@link UserController}.
- *
- * <p>This test class validates the functionality of the {@link UserController},
- * specifically testing the `enable` endpoint.</p>
  */
 class UserControllerTest {
 
@@ -32,22 +31,29 @@ class UserControllerTest {
 	}
 
 	/**
-	 * Tests the {@link UserController#enable(Long)} method.
-	 * Verifies that the user service is called with the correct user ID
+	 * Tests the {@link UserController#create(UserRequestDTO)} method.
+	 * Verifies that the creation service is called with the correct request
 	 * and that the response is properly constructed.
 	 */
 	@Test
-	void enableUserTest() {
-		Long userId = 1L;
+	void createUserTest() {
+		UserRequestDTO request = new UserRequestDTO();
+		request.setPassword("password123");
+		request.setFirstName("John");
+		request.setLastName("Doe");
 
-		doNothing().when(userService).enable(userId);
+		User response = new User();
+		response.setId(1L);
+		response.setUsername("testUser");
 
-		ResponseEntity<String> result = userController.enable(userId);
+		when(userService.create(any(UserRequestDTO.class))).thenReturn(response);
+
+		ResponseEntity<User> result = userController.create(request);
 
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(result.getBody()).isNotNull();
-		assertThat(result.getBody()).isEqualTo("User successfully enabled.");
+		assertThat(result.getBody().getUsername()).isEqualTo("testUser");
 
-		verify(userService, times(1)).enable(userId);
+		verify(userService, times(1)).create(any(UserRequestDTO.class));
 	}
 }

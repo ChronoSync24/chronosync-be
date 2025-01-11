@@ -1,16 +1,14 @@
 package com.sinergy.chronosync.controller;
 
 import com.sinergy.chronosync.dto.request.LoginRequestDTO;
-import com.sinergy.chronosync.dto.request.UserRegisterRequestDTO;
 import com.sinergy.chronosync.dto.response.AuthenticationResponse;
-import com.sinergy.chronosync.dto.response.UserRegisterResponseDTO;
 import com.sinergy.chronosync.service.AuthenticationService;
+import com.sinergy.chronosync.service.LogoutService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Authentication controller class.
@@ -21,19 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
 	private final AuthenticationService authenticationService;
-
-	/**
-	 * Registers new user.
-	 *
-	 * @param request {@link UserRegisterRequestDTO} user register request
-	 * @return {@link ResponseEntity<UserRegisterResponseDTO>} user registration response
-	 */
-	@PostMapping("/register")
-	public ResponseEntity<UserRegisterResponseDTO> register(
-		@RequestBody UserRegisterRequestDTO request
-	) {
-		return ResponseEntity.ok(authenticationService.register(request));
-	}
+	private final LogoutService logoutService;
 
 	/**
 	 * Authenticates user with provided credentials.
@@ -46,5 +32,18 @@ public class AuthController {
 		@RequestBody LoginRequestDTO request
 	) {
 		return ResponseEntity.ok(authenticationService.authenticate(request));
+	}
+
+	/**
+	 * Log out user.
+	 *
+	 * @param request  {@link HttpServletRequest} http request
+	 * @param response {@link HttpServletResponse} http response
+	 * @return {@link ResponseEntity<String>} logout message
+	 */
+	@GetMapping("/logout")
+	public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+		logoutService.logout(request, response, null);
+		return ResponseEntity.ok("Logout successful.");
 	}
 }
