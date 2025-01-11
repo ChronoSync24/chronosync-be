@@ -84,13 +84,7 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 			throw new InvalidStateException("Appointment type does not belong to the current user's firm.");
 		}
 
-		existingAppointmentType.setName(requestDto.getName());
-		existingAppointmentType.setDurationMinutes(requestDto.getDurationMinutes());
-		existingAppointmentType.setPrice(requestDto.getPrice());
-		existingAppointmentType.setCurrency(requestDto.getCurrency());
-		existingAppointmentType.setColorCode(requestDto.getColorCode());
-
-		return appointmentTypeRepository.save(existingAppointmentType);
+		return appointmentTypeRepository.save(requestDto.toModel());
 	}
 
 	/**
