@@ -3,9 +3,7 @@ package com.sinergy.chronosync.service;
 import com.sinergy.chronosync.builder.TokenFilterBuilder;
 import com.sinergy.chronosync.builder.UserFilterBuilder;
 import com.sinergy.chronosync.dto.request.LoginRequestDTO;
-import com.sinergy.chronosync.dto.request.UserRegisterRequestDTO;
 import com.sinergy.chronosync.dto.response.AuthenticationResponse;
-import com.sinergy.chronosync.dto.response.UserRegisterResponseDTO;
 import com.sinergy.chronosync.model.Token;
 import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.repository.TokenRepository;
@@ -23,7 +21,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -33,11 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for {@link AuthenticationService}.
- *
- * <p>Tests various methods of the {@link AuthenticationService} including user registration,
- * authentication, and error handling. The tests verify the service's behavior under valid and invalid
- * conditions, ensuring the correct interactions with repositories, authentication managers, and utility classes.</p>
+ * Unit tests for {@link AuthenticationServiceImpl}.
  */
 class AuthenticationServiceTest {
 
@@ -46,9 +39,6 @@ class AuthenticationServiceTest {
 
 	@Mock
 	private TokenRepository tokenRepository;
-
-	@Mock
-	private PasswordEncoder passwordEncoder;
 
 	@Mock
 	private AuthenticationManager authenticationManager;
@@ -62,31 +52,6 @@ class AuthenticationServiceTest {
 	@BeforeEach
 	void setup() {
 		MockitoAnnotations.openMocks(this);
-	}
-
-	/**
-	 * Tests the {@link AuthenticationServiceImpl#register(UserRegisterRequestDTO)} method.
-	 * Verifies that a user is registered successfully and that the correct methods are called
-	 * for encoding the password and saving the user to the repository.
-	 */
-	@Test
-	void registerUserTest() {
-		UserRegisterRequestDTO request = new UserRegisterRequestDTO();
-		request.setFirstName("Test");
-		request.setLastName("Test");
-
-		User user = request.toModel();
-		user.setPassword("encodedPassword");
-
-		when(passwordEncoder.encode(request.getPassword())).thenReturn("encodedPassword");
-		when(userRepository.save(any(User.class))).thenReturn(user);
-
-		UserRegisterResponseDTO response = authenticationService.register(request);
-
-		assertThat(response.getUsername()).isEqualTo(request.getUsername());
-
-		verify(userRepository, times(1)).save(any(User.class));
-		verify(passwordEncoder, times(1)).encode(request.getPassword());
 	}
 
 	/**

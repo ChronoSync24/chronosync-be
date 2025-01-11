@@ -20,13 +20,6 @@ import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for {@link UserRepository}.
- *
- * <p>Tests various methods of the {@link UserRepository} including finding users by specific
- * criteria (e.g., first name, username, role) and verifying that the repository behaves as expected
- * when querying for user data using different specifications.</p>
- *
- * <p>Tests include checks for matching users, no matches, and handling the result of queries
- * based on the specifications provided.</p>
  */
 class UserRepositoryTest {
 
