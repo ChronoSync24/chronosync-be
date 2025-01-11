@@ -37,7 +37,7 @@ public class AppointmentTypeRequestDTO {
 			.price(price)
 			.currency(currency)
 			.colorCode(colorCode)
-			.firm(this.getFirm())
+			.firm(firm)
 			.build();
 	}
 }
