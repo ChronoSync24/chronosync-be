@@ -1,5 +1,6 @@
 package com.sinergy.chronosync.model.appointmentType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sinergy.chronosync.model.BaseEntity;
 import com.sinergy.chronosync.model.firm.Firm;
 import jakarta.persistence.*;
@@ -24,6 +25,7 @@ public class AppointmentType extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private Currency currency;
 
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "firm_id")
 	private Firm firm;

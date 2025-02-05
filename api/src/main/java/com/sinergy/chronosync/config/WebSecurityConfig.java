@@ -48,6 +48,7 @@ public class WebSecurityConfig {
 			"/api/v1/user/create",
 			"/api/v1/test/test-manager",
 			"/api/v1/appointment-type/**"
+			"/api/v1/client/**"
 		)
 	);
 

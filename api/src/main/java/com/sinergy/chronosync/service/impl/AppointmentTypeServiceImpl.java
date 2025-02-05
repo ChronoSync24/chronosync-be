@@ -36,8 +36,6 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 	 * a list of {@link AppointmentType} objects linked to that firm's ID.
 	 *
 	 * @return {@link Page} of {@link AppointmentType} objects associated with the current user's firm.
-	 * @throws UserNotFoundException if the user is not found.
-	 * @throws InvalidStateException if the user is not assigned to a firm.
 	 */
 	public Page<AppointmentType> getAppointmentTypes(PageRequest pageRequest) {
 		AppointmentTypeFilterBuilder filterBuilder = AppointmentTypeFilterBuilder.builder()
@@ -54,8 +52,6 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 	 *
 	 * @param requestDto {@link AppointmentTypeRequestDTO} containing appointment type details.
 	 * @return {@link AppointmentType} representing the saved appointment type.
-	 * @throws UserNotFoundException if the user is not found.
-	 * @throws InvalidStateException if the user is not associated with a firm.
 	 */
 	@Override
 	public AppointmentType createAppointmentType(AppointmentTypeRequestDTO requestDto) {
@@ -84,7 +80,13 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService {
 			throw new InvalidStateException("Appointment type does not belong to the current user's firm.");
 		}
 
-		return appointmentTypeRepository.save(requestDto.toModel());
+		existingAppointmentType.setName(requestDto.getName());
+		existingAppointmentType.setDurationMinutes(requestDto.getDurationMinutes());
+		existingAppointmentType.setPrice(requestDto.getPrice());
+		existingAppointmentType.setCurrency(requestDto.getCurrency());
+		existingAppointmentType.setColorCode(requestDto.getColorCode());
+
+		return appointmentTypeRepository.save(existingAppointmentType);
 	}
 
 	/**

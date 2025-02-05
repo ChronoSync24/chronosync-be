@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * </p>
  */
 @RestController
-@RequestMapping(path = "api/v1/appointment-type")
+@RequestMapping(path = "api/v1/appointmenttype")
 @RequiredArgsConstructor
 public class AppointmentTypeController {
 
