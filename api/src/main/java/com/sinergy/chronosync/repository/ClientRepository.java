@@ -1,13 +1,13 @@
 package com.sinergy.chronosync.repository;
 
-import com.sinergy.chronosync.model.Firm;
+import com.sinergy.chronosync.model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
- * Firm repository class for managing firms.
+ * Client repository class for managing clients.
  */
 @Repository
-public interface FirmRepository extends JpaRepository<Firm, Long>, JpaSpecificationExecutor<Firm> {
+public interface ClientRepository extends JpaRepository<Client, Long>, JpaSpecificationExecutor<Client> {
 }
