@@ -1,6 +1,6 @@
 package com.sinergy.chronosync.dto.request;
 
-import com.sinergy.chronosync.model.client.Client;
+import com.sinergy.chronosync.model.Client;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

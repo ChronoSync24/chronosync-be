@@ -1,6 +1,6 @@
 package com.sinergy.chronosync.builder;
 
-import com.sinergy.chronosync.model.client.Client;
+import com.sinergy.chronosync.model.Client;
 import jakarta.persistence.criteria.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,12 +46,6 @@ public class ClientFilterBuilderTest {
 
     @Mock
     private Path<String> lastNamePath;
-
-    @Mock
-    private Path<String> emailPath;
-
-    @Mock
-    private Path<String> phonePath;
 
     @Mock
     private Path<Long> firmIdPath;

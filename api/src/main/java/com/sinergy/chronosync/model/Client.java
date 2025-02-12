@@ -1,8 +1,6 @@
-package com.sinergy.chronosync.model.client;
+package com.sinergy.chronosync.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.sinergy.chronosync.model.BaseEntity;
-import com.sinergy.chronosync.model.firm.Firm;
 import jakarta.persistence.*;
 import lombok.*;
 

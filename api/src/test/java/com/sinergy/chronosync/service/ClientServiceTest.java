@@ -2,8 +2,8 @@ package com.sinergy.chronosync.service;
 
 import com.sinergy.chronosync.dto.request.ClientRequestDTO;
 import com.sinergy.chronosync.exception.InvalidStateException;
-import com.sinergy.chronosync.model.client.Client;
-import com.sinergy.chronosync.model.firm.Firm;
+import com.sinergy.chronosync.model.Client;
+import com.sinergy.chronosync.model.Firm;
 import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.repository.ClientRepository;
 import com.sinergy.chronosync.repository.UserRepository;
@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -28,7 +29,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class ClientServiceImplTest {
+class ClientServiceTest {
 
     @Mock
     private ClientRepository clientRepository;
@@ -57,9 +58,10 @@ class ClientServiceImplTest {
         User user = new User();
         user.setUsername("testUser");
         user.setFirm(firm);
+
         when(userRepository.findOne(Mockito.<Specification<User>>any())).thenReturn(Optional.of(user));
     }
-    /*
+
     @Test
     void getClientsTest() {
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -74,7 +76,8 @@ class ClientServiceImplTest {
         client.getFirms().add(firm);
         Page<Client> clients = new PageImpl<>(List.of(client));
 
-        when(clientRepository.findAll(any(PageRequest.class))).thenReturn(clients);
+        when(clientRepository.findAll(any(Specification.class), any(Pageable.class)))
+                .thenReturn(clients);
 
         Page<Client> result = clientService.getClients(pageRequest);
 
@@ -82,9 +85,9 @@ class ClientServiceImplTest {
         assertEquals(1, result.getTotalElements(), "Should contain 1 client");
         assertEquals("John", result.getContent().getFirst().getFirstName());
 
-        verify(clientRepository, times(1)).findAll(any(PageRequest.class));
+        verify(clientRepository, times(1)).findAll(any(Specification.class), any(Pageable.class));
     }
-    */
+
     @Test
     void createClientTest() {
         Firm firm = new Firm();

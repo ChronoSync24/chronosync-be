@@ -1,7 +1,7 @@
 package com.sinergy.chronosync.service;
 
 import com.sinergy.chronosync.dto.request.ClientRequestDTO;
-import com.sinergy.chronosync.model.client.Client;
+import com.sinergy.chronosync.model.Client;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

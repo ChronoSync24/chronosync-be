@@ -2,7 +2,7 @@ package com.sinergy.chronosync.controller;
 
 import com.sinergy.chronosync.dto.request.BasePaginationRequest;
 import com.sinergy.chronosync.dto.request.ClientRequestDTO;
-import com.sinergy.chronosync.model.client.Client;
+import com.sinergy.chronosync.model.Client;
 import com.sinergy.chronosync.service.impl.ClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,5 @@
-package com.sinergy.chronosync.model.firm;
+package com.sinergy.chronosync.model;
 
-import com.sinergy.chronosync.model.BaseEntity;
-import com.sinergy.chronosync.model.client.Client;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;

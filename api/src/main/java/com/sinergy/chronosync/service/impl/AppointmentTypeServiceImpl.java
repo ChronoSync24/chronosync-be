@@ -6,7 +6,7 @@ import com.sinergy.chronosync.dto.request.AppointmentTypeRequestDTO;
 import com.sinergy.chronosync.exception.InvalidStateException;
 import com.sinergy.chronosync.exception.UserNotFoundException;
 import com.sinergy.chronosync.model.appointmentType.AppointmentType;
-import com.sinergy.chronosync.model.firm.Firm;
+import com.sinergy.chronosync.model.Firm;
 import com.sinergy.chronosync.model.user.User;
 import com.sinergy.chronosync.repository.AppointmentTypeRepository;
 import com.sinergy.chronosync.repository.UserRepository;

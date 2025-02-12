@@ -1,6 +1,6 @@
 package com.sinergy.chronosync.repository;
 
-import com.sinergy.chronosync.model.client.Client;
+import com.sinergy.chronosync.model.Client;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
